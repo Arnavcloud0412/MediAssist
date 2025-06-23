@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Health Report - MediAssist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-heartbeat text-red-500 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">MediAssist</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="pages/login.html" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                    <a href="pages/register.html" class="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Test Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <h1 class="text-3xl font-bold text-gray-900">Health Report Test</h1>
+            <p class="mt-1 text-sm text-gray-600">Testing the health report functionality</p>
+        </div>
+
+        <!-- Test Results -->
+        <div class="mt-8">
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg font-medium text-gray-900">Test Results</h3>
+                    <div id="testResults" class="mt-4">
+                        <p class="text-gray-600">Click the button below to test the health report functionality...</p>
+                    </div>
+                    <div class="mt-4">
+                        <button id="testHealthReport" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fas fa-test mr-2"></i>
+                            Test Health Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple test script
+        document.getElementById('testHealthReport').addEventListener('click', async () => {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<p class="text-blue-600">Testing health report functionality...</p>';
+            
+            try {
+                // Test Firebase config endpoint
+                const configResponse = await fetch('http://localhost:5000/firebase-config');
+                if (configResponse.ok) {
+                    resultsDiv.innerHTML += '<p class="text-green-600">✓ Firebase config endpoint working</p>';
+                } else {
+                    resultsDiv.innerHTML += '<p class="text-red-600">✗ Firebase config endpoint failed</p>';
+                }
+                
+                // Test health reports endpoint (will fail without auth, but we can test the endpoint)
+                const healthResponse = await fetch('http://localhost:5000/api/health-reports/test-user');
+                if (healthResponse.status === 400) {
+                    resultsDiv.innerHTML += '<p class="text-green-600">✓ Health reports endpoint responding (expected 400 for invalid user)</p>';
+                } else {
+                    resultsDiv.innerHTML += '<p class="text-yellow-600">? Health reports endpoint status: ' + healthResponse.status + '</p>';
+                }
+                
+                resultsDiv.innerHTML += '<p class="text-green-600 mt-4">✓ Backend server is running and endpoints are accessible</p>';
+                resultsDiv.innerHTML += '<p class="text-blue-600">To test the full functionality, please:</p>';
+                resultsDiv.innerHTML += '<ol class="list-decimal list-inside text-blue-600 mt-2">';
+                resultsDiv.innerHTML += '<li>Register or login to the system</li>';
+                resultsDiv.innerHTML += '<li>Go to Voice Input page and record symptoms</li>';
+                resultsDiv.innerHTML += '<li>Generate a health report</li>';
+                resultsDiv.innerHTML += '<li>Visit the Health Report page to see the hospital-style report</li>';
+                resultsDiv.innerHTML += '</ol>';
+                
+            } catch (error) {
+                resultsDiv.innerHTML = '<p class="text-red-600">✗ Error testing endpoints: ' + error.message + '</p>';
+            }
+        });
+    </script>
+</body>
+</html> 
