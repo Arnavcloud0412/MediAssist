@@ -577,5 +577,8 @@ def get_user_appointments(user_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# For Vercel deployment
+app.debug = False
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
