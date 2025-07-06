@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/login", "destination": "/pages/login.html" },
+    { "source": "/register", "destination": "/pages/register.html" },
+    { "source": "/dashboard", "destination": "/pages/dashboard.html" },
+    { "source": "/appointments", "destination": "/pages/appointments.html" },
+    { "source": "/health-report", "destination": "/pages/health-report.html" },
+    { "source": "/medical-info", "destination": "/pages/medical-info.html" },
+    { "source": "/voice-input", "destination": "/pages/voice-input.html" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
