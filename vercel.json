@@ -22,5 +22,10 @@
   ],
   "env": {
     "PYTHONPATH": "Backend"
+  },
+  "functions": {
+    "Backend/app.py": {
+      "runtime": "python3.9"
+    }
   }
 } 
